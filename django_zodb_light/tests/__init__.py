@@ -1,0 +1,2 @@
+from objectmap import RelationRegistryTestCase, ObjectRegistryTestCase
+from models import ModelsTestCase
