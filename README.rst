@@ -1,5 +1,5 @@
-zodb-relations
-==============
+zodb-zodb-light
+===============
 
 Status: alpha, API subject to changes, poorly documented.
 
