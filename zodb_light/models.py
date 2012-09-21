@@ -21,19 +21,28 @@ class Model(Persistent):
 
     def __init__(self):
         ObjectMap.default().add(self)
+        self.db[self.__objectid__] = self
 
 
 class RelationDescriptor(object):
-    def __init__(self, source, target, name):
+    def __init__(self, source, target, name, one=False):
         self.source = source
         self.target = target
         self.name = name
+        self.one = one
 
     def __get__(self, obj, objtype=None):
-        return Relation(obj, self)
+        if self.one:
+            for relation in Relation(obj, self):
+                return relation
+        else:
+            return Relation(obj, self)
 
-    def __set__(self, obj, related_list):
-        Relation(obj, self).set(related_list)
+    def __set__(self, obj, related):
+        if self.one:
+            related = [related]
+
+        Relation(obj, self).set(related)
 
 
 class Relation(object):
@@ -47,10 +56,18 @@ class Relation(object):
         for related in related_list:
             self.append(related)
 
+    def is_source(self):
+        if self.relation.source == 'self':
+            return True
+        elif self.relation.target == 'self':
+            return False
+
+        return isinstance(self.obj, self.relation.source)
+
     def _clear(self):
-        if isinstance(self.obj, self.relation.source):
+        if self.is_source():
             ids = ObjectMap.default().targets(self.obj, self.relation.name)
-        elif isinstance(self.obj, self.relation.target):
+        else:
             ids = ObjectMap.default().sources(self.obj, self.relation.name)
 
         for objid in list(ids):
@@ -58,15 +75,15 @@ class Relation(object):
                     self.relation.name)
 
     def __iter__(self):
-        if isinstance(self.obj, self.relation.source):
+        if self.is_source():
             return ObjectMap.default().targets(self.obj, self.relation.name)
-        elif isinstance(self.obj, self.relation.target):
+        else:
             return ObjectMap.default().sources(self.obj, self.relation.name)
 
     def append(self, related):
-        if isinstance(self.obj, self.relation.source):
+        if self.is_source():
             args = [self.obj, related, self.relation.name]
-        elif isinstance(self.obj, self.relation.target):
+        else:
             args = [related, self.obj, self.relation.name]
 
         ObjectMap.default().connect(*args)

@@ -1,5 +1,5 @@
-zodb-zodb-light
-===============
+django-zodb-light
+=================
 
 Status: alpha, API subject to changes, poorly documented.
 
@@ -9,9 +9,12 @@ Features
 --------
 
 - TransactionMiddleware that commits automatically, stolen from django-zodb,
-- ObjectMap that maps UUIDs and persistent objects, stolen from SubstanceD
-- Simple relations API with RelationDescriptor,
-- Backward (reverse) relations support,
+- ObjectMap that maps UUIDs and persistent objects, stolen from SubstanceD,
+- Relations:
+  - many to many,
+  - one to many,
+  - many to one,
+  - reverse (backwards),
 
 Information
 -----------
