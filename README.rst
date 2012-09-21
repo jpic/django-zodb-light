@@ -11,6 +11,7 @@ Features
 - TransactionMiddleware that commits automatically, stolen from django-zodb,
 - ObjectMap that maps UUIDs and persistent objects, stolen from SubstanceD,
 - Relations:
+
   - many to many,
   - one to many,
   - many to one,
