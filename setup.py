@@ -6,7 +6,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name='django_zodb_light',
+    name='zodb_light',
     version='0.0.0',
     description='2 way relations for ZODB',
     author='Extracted from SubstanceD, packaged for reuse by James Pic',
