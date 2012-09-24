@@ -1,3 +1,6 @@
+import uuid
+import importlib
+
 from persistent import Persistent
 from BTrees.OOBTree import OOBTree
 
@@ -10,6 +13,22 @@ class ClassProperty(property):
 
 
 class Model(Persistent):
+    @classmethod
+    def uuid_key(self, uuid_str):
+        return uuid.UUID(uuid_str)
+
+    @property
+    def uuid(self):
+        return Model.uuid_key(self.__objectid__)
+
+    @classmethod
+    def exists(self, uuid_key):
+        return Model.uuid_key(uuid_key) in self.db.keys()
+
+    @classmethod
+    def get(self, uuid_key, default=None):
+        self.db.get(self.uuid_key(uuid), default)
+
     @ClassProperty
     @classmethod
     def db(cls):
