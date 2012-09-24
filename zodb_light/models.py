@@ -38,9 +38,14 @@ class Model(Persistent):
             ZODB_ROOT[cls.__name__] = OOBTree()
         return cls.db
 
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         ObjectMap.default().add(self)
         self.db[self.__objectid__] = self
+
+    def __unicode__(self):
+        return self.name
+
 
 
 class RelationDescriptor(object):
