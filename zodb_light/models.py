@@ -46,14 +46,30 @@ class Model(Persistent):
     def __unicode__(self):
         return self.name
 
+def get_model(name):
+    bits = name.split('.')
+    mod = importlib.import_module('.'.join(bits[:-1]))
+    return getattr(mod, bits[-1])
 
 
 class RelationDescriptor(object):
     def __init__(self, source, target, name, one=False):
-        self.source = source
-        self.target = target
+        self._source = source
+        self._target = target
         self.name = name
         self.one = one
+
+    @property
+    def target(self):
+        if self._target != 'self' and isinstance(self._target, str):
+            self._target = get_model(self._target)
+        return self._target
+
+    @property
+    def source(self):
+        if self._source != 'self' and isinstance(self._source, str):
+            self._source = get_model(self._source)
+        return self._source
 
     def __get__(self, obj, objtype=None):
         if self.one:

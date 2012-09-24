@@ -4,21 +4,20 @@ from ..models import Model, RelationDescriptor
 
 
 class Book(Model):
-    def __init__(self, name):
-        super(Book, self).__init__()
-        self.name = name
+    pass
 
 
 class Author(Model):
-    def __init__(self, name):
-        super(Author, self).__init__()
-        self.name = name
-
-    def __unicode__(self):
-        return self.name
+    pass
 
 
 class ModelsTestCase(unittest.TestCase):
+    def test_named_model(self):
+        desc = RelationDescriptor('zodb_light.tests.models.Author',
+            'zodb_light.tests.models.Book', 'tree')
+        self.assertEqual(desc.source, Author)
+        self.assertEqual(desc.target, Book)
+
     def test_self_relation(self):
         Author.parent = RelationDescriptor(Author, 'self', 'tree', True)
         Author.children = RelationDescriptor('self', Author, 'tree')

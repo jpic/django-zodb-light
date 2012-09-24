@@ -4,15 +4,10 @@ from ..models import Model
 from ..objectmap import ReferenceMap, ObjectMap
 
 class Book(Model):
-    def __init__(self, name):
-        super(Book, self).__init__()
-        self.name = name
-
+    pass
 
 class Author(Model):
-    def __init__(self, name):
-        super(Author, self).__init__()
-        self.name = name
+    pass
 
 
 class RelationRegistryTestCase(unittest.TestCase):
