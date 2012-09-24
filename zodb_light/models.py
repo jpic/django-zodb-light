@@ -68,13 +68,17 @@ class RelationDescriptor(object):
 
     @property
     def target(self):
-        if self._target != 'self' and isinstance(self._target, str):
+        if self._target == 'self':
+            self._target = self.__class__
+        elif isinstance(self._target, str):
             self._target = get_model(self._target)
         return self._target
 
     @property
     def source(self):
-        if self._source != 'self' and isinstance(self._source, str):
+        if self._source == 'self':
+            self._source = self.__class__
+        elif isinstance(self._source, str):
             self._source = get_model(self._source)
         return self._source
 
@@ -104,11 +108,6 @@ class Relation(object):
             self.append(related)
 
     def is_source(self):
-        if self.relation.source == 'self':
-            return True
-        elif self.relation.target == 'self':
-            return False
-
         return isinstance(self.obj, self.relation.source)
 
     def _clear(self):
