@@ -7,6 +7,7 @@ from BTrees.OOBTree import OOBTree
 from settings import ZODB_ROOT
 from objectmap import ObjectMap
 
+
 class ClassProperty(property):
     def __get__(self, cls, owner):
         return self.fget.__get__(None, owner)()
@@ -19,15 +20,21 @@ class Model(Persistent):
 
     @property
     def uuid(self):
-        return Model.uuid_key(self.__objectid__)
+        return self.__class__.uuid_key(self.__objectid__)
 
     @classmethod
-    def exists(self, uuid_key):
-        return Model.uuid_key(uuid_key) in self.db.keys()
+    def exists(self, uuid_str):
+        return self.uuid_key(uuid_str) in self.db.keys()
 
     @classmethod
-    def get(self, uuid_key, default=None):
-        self.db.get(self.uuid_key(uuid), default)
+    def get(self, uuid_str, default=None):
+        return self.db.get(self.uuid_key(uuid_str), default)
+
+    @classmethod
+    def get_by_name(self, name):
+        for obj in self.db.values():
+            if obj.name == name:
+                return obj
 
     @ClassProperty
     @classmethod
