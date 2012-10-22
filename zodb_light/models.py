@@ -53,6 +53,7 @@ class Model(Persistent):
     def __unicode__(self):
         return self.name
 
+
 def get_model(name):
     bits = name.split('.')
     mod = importlib.import_module('.'.join(bits[:-1]))

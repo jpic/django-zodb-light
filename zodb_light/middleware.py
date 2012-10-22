@@ -12,7 +12,7 @@ import transaction
 class TransactionMiddleware(object):
     enabled = True
 
-    def process_exception(self, request, exception):  # pylint:disable-msg=W0613
+    def process_exception(self, request, exception):
         if self.enabled:
             transaction.abort()
 
