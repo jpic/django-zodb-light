@@ -1,3 +1,5 @@
+.. image:: https://secure.travis-ci.org/yourlabs/django-zodb-light.png?branch=master
+
 django-zodb-light
 =================
 
