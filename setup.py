@@ -42,6 +42,9 @@ setup(
     long_description=read('README.rst'),
     license='MIT',
     keywords='django zodb',
+    install_requires=[
+        'ZODB3',
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
