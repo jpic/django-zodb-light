@@ -110,6 +110,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'zodb_light',
+    'zodb_light.contrib.form_data',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
