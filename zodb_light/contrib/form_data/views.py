@@ -22,3 +22,19 @@ class FormDataDetailView(generic.TemplateView):
         context = super(FormDataDetailView, self).get_context_data(**kwargs)
         context['form_data'] = FormData.get(kwargs['uuid'])
         return context
+
+
+class FormDataUpdateView(FormDataCreateView):
+    form_class = None
+
+    def get_initial(self):
+        return FormData.get(self.kwargs['uuid']).form_data
+
+    def form_valid(self, form):
+        self.form_data = FormData.get(self.kwargs['uuid'])
+        self.form_data.form_data = form.cleaned_data
+        return http.HttpResponseRedirect(self.get_success_url())
+
+    def get_form_class(self):
+        if self.form_class is None:
+            return FormData.get(self.kwargs['uuid']).form_class

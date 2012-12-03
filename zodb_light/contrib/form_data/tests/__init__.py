@@ -15,7 +15,7 @@ class ViewTestCase(TestCase):
         if TEST_APP not in settings.INSTALLED_APPS:
             settings.INSTALLED_APPS += (TEST_APP,)
 
-    def test_create(self):
+    def test_crud(self):
         response = self.client.get('/artists/create/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('id_name' in response.content)
@@ -34,3 +34,15 @@ class ViewTestCase(TestCase):
         response = self.client.get(response['Location'])
         self.assertTrue('name' in response.content)
         self.assertTrue('bbq bob' in response.content)
+
+        response = self.client.get('/formdata/' + str(uuid) + '/update/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('id_name' in response.content)
+        self.assertTrue(
+            '<input type="text" name="name" value="bbq bob" id="id_name" />'
+            in response.content)
+
+        response = self.client.post('/formdata/' + str(uuid) + '/update/',
+            {'name': 'bbq james'})
+        self.assertEqual(FormData.get(str(uuid)).form_data['name'],
+            'bbq james')
